@@ -1,0 +1,8 @@
+{
+	"stage": 0,
+	"optional": [
+		"runtime",
+		"es6.spec.symbols",
+		"validation.undeclaredVariableCheck"
+	]
+}

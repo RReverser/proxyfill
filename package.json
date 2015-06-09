@@ -1,0 +1,34 @@
+{
+  "name": "proxyfill",
+  "version": "1.0.0",
+  "description": "Limited ES5 polyfill for ES6 Proxy.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "watch": "babel src --out-dir dist --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rreverser/proxyfill.git"
+  },
+  "keywords": [
+    "es6",
+    "polyfill",
+    "proxy",
+    "reflect",
+    "es2015"
+  ],
+  "author": "Ingvar Stepanyan <me@rreverser.com> (http://rreverser.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rreverser/proxyfill/issues"
+  },
+  "homepage": "https://github.com/rreverser/proxyfill#readme",
+  "dependencies": {
+    "babel-runtime": "^5.4.7",
+    "better-log": "^1.1.0"
+  },
+  "devDependencies": {
+    "babel": "^5.5.6"
+  }
+}
