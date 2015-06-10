@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/rreverser/proxyfill#readme",
   "dependencies": {
-    "babel-runtime": "^5.4.7",
-    "better-log": "^1.1.0"
+    "babel-runtime": "^5.5.6",
+    "better-log": "^1.2.0"
   },
   "devDependencies": {
     "babel": "^5.5.6"
