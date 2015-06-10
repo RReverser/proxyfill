@@ -1,5 +1,6 @@
 import { PROXY_HANDLER, PROXY_TARGET, CALL, CONSTRUCT, setInternalMethods } from '../symbols';
 import * as internalMethods from './_internalMethods';
+import * as internalFnMethods from './_internalFnMethods';
 import { assertObject } from '../helpers';
 
 function getProxyHandler() {
@@ -26,7 +27,7 @@ export default class Proxy {
 		if (typeof target === 'function') {
 			proxy = Object.setPrototypeOf(function proxy(...args) {
 				if (this instanceof proxy) {
-					return proxy[CONSTRUCT](args, this);
+					return proxy[CONSTRUCT](args, this.constructor);
 				} else {
 					return proxy[CALL](this, args);
 				}
@@ -57,7 +58,7 @@ export default class Proxy {
 	}
 }
 
-setInternalMethods(Proxy.prototype, internalMethods, (method, name) => {
+function wrapTrap(method, name) {
 	return function (...args) {
 		var handler = this::getProxyHandler();
 		var target = this[PROXY_TARGET];
@@ -68,9 +69,11 @@ setInternalMethods(Proxy.prototype, internalMethods, (method, name) => {
 		}
 		return method(handler::trap(...args), ...args);
 	};
-});
+}
 
-const FunctionProxyProto = Object.assign(Object.create(Function.prototype, {
+setInternalMethods(Proxy.prototype, internalMethods, wrapTrap);
+
+const FunctionProxyProto = Object.create(Function.prototype, {
 	toString: {
 		writable: true,
 		configurable: true,
@@ -78,7 +81,11 @@ const FunctionProxyProto = Object.assign(Object.create(Function.prototype, {
 			return this[PROXY_TARGET].toString();
 		}
 	}
-}), Proxy.prototype);
+});
+
+Object.assign(FunctionProxyProto, Proxy.prototype);
+
+setInternalMethods(FunctionProxyProto, internalFnMethods, wrapTrap);
 
 // using `.bind()` to remove `prototype` on function
 // http://people.mozilla.org/~jorendorff/es6-draft.html#sec-properties-of-the-proxy-constructor

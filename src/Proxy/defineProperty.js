@@ -1,11 +1,12 @@
 import { invariant, isCompatiblePropertyDescriptor } from '../helpers';
+import { getOwnPropertyDescriptor, isExtensible } from '../Reflect';
 
 export function defineProperty(trapResult, target, key, desc) {
 	if (!trapResult) {
 		return false;
 	}
-	var targetDesc = Reflect.getOwnPropertyDescriptor(target, key, desc);
-	var extensibleTarget = Reflect.isExtensible(target);
+	var targetDesc = getOwnPropertyDescriptor(target, key);
+	var extensibleTarget = isExtensible(target);
 	var settingConfigFalse = 'configurable' in desc && !desc.configurable;
 	if (targetDesc === undefined) {
 		if (!extensibleTarget) {

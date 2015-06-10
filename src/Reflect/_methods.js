@@ -1,3 +1,5 @@
+export * from './apply';
+export * from './construct';
 export * from './defineProperty';
 export * from './deleteProperty';
 export * from './enumerate';

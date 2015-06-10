@@ -9,6 +9,7 @@ import {
 	GET_PROTOTYPE_OF,
 	HAS_PROPERTY,
 	IS_EXTENSIBLE,
+	OWN_PROPERTY_KEYS,
 	PREVENT_EXTENSIONS,
 	SET,
 	SET_PROTOTYPE_OF
@@ -27,6 +28,7 @@ export const internalMethods = Object.freeze({
 	getPrototypeOf: GET_PROTOTYPE_OF,
 	has: HAS_PROPERTY,
 	isExtensible: IS_EXTENSIBLE,
+	ownKeys: OWN_PROPERTY_KEYS,
 	preventExtensions: PREVENT_EXTENSIONS,
 	set: SET,
 	setPrototypeOf: SET_PROTOTYPE_OF
@@ -42,7 +44,7 @@ const methodEntries = Object.keys(internalMethods).map(function (key) {
 export function setInternalMethods(obj, impl, transform) {
 	for (let { name, symbol } of methodEntries) {
 		if (!(name in impl)) {
-			throw new ReferenceError(`impl.${name} wasn't found`);
+			continue;
 		}
 		var method = impl[name];
 		if (transform !== undefined) {

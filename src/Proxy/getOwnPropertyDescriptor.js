@@ -6,23 +6,25 @@ import {
 	completePropertyDescriptor
 } from '../helpers';
 
+import { getOwnPropertyDescriptor as rGetOwnPropertyDescriptor, isExtensible } from '../Reflect';
+
 export function getOwnPropertyDescriptor(resultDesc, target, key) {
 	if (!isObject(resultDesc) && resultDesc !== undefined) {
 		invariant('The result of [[GetOwnProperty]] must be either an Object or undefined.');
 	}
-	var targetDesc = Reflect.getOwnPropertyDescriptor(target, key);
+	var targetDesc = rGetOwnPropertyDescriptor(target, key);
 	if (resultDesc === undefined) {
 		if (targetDesc === undefined) return;
 		if (!targetDesc.configurable) {
 			invariant('A property cannot be reported as non-existent, if it exists as a non-configurable own property of the target object.');
 		}
-		if (!Reflect.isExtensible(target)) {
+		if (!isExtensible(target)) {
 			invariant('A property cannot be reported as non-existent, if it exists as an own property of the target object and the target object is not extensible.');
 		}
 		return;
 	}
 	resultDesc = completePropertyDescriptor(toPropertyDescriptor(resultDesc));
-	if (!isCompatiblePropertyDescriptor(Reflect.isExtensible(target), resultDesc, targetDesc)) {
+	if (!isCompatiblePropertyDescriptor(isExtensible(target), resultDesc, targetDesc)) {
 		invariant('A property cannot be reported as existent, if it does not exists as an own property of the target object and the target object is not extensible.');
 	}
 	if (!resultDesc.configurable && (targetDesc === undefined || targetDesc.configurable)) {

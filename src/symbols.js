@@ -11,6 +11,7 @@ export const GET_OWN_PROPERTY = Symbol('[[GetOwnProperty]]');
 export const GET_PROTOTYPE_OF = Symbol('[[GetPrototypeOf]]');
 export const HAS_PROPERTY = Symbol('[[HasProperty]]');
 export const IS_EXTENSIBLE = Symbol('[[IsExtensible]]');
+export const OWN_PROPERTY_KEYS = Symbol('[[OwnPropertyKeys]]');
 export const PREVENT_EXTENSIONS = Symbol('[[PreventExtensions]]');
 export const SET = Symbol('[[Set]]');
 export const SET_PROTOTYPE_OF = Symbol('[[SetPrototypeOf]]');

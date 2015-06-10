@@ -1,5 +1,16 @@
 import { PROXY_HANDLER } from './symbols';
 
+export const has = Object.prototype.hasOwnProperty;
+
+export function tryApply(func, context, args) {
+	try {
+		func.apply(context, args);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
+
 export function isObjectOrNull(obj) {
 	return typeof obj === 'object' || typeof obj === 'function';
 }

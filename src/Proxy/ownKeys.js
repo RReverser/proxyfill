@@ -1,4 +1,5 @@
 import { invariant, assertObject } from '../helpers';
+import { getOwnPropertyDescriptor } from '../Reflect';
 
 export function ownKeys(trapResult, target) {
 	assertObject(trapResult);
@@ -8,10 +9,10 @@ export function ownKeys(trapResult, target) {
 		}
 	});
 	var extensibleTarget = Object.isExtensible(target);
-	var targetKeys = Reflect.ownKeys(target);
+	var targetKeys = ownKeys(target);
 	var targetConfigurableKeys = [], targetNonConfigurableKeys = [];
 	for (let key of targetKeys) {
-		let desc = Reflect.getOwnPropertyDescriptor(target, key);
+		let desc = getOwnPropertyDescriptor(target, key);
 		if (desc !== undefined && !desc.configurable) {
 			targetNonConfigurableKeys.push(key);
 		} else {
