@@ -1,4 +1,5 @@
-import { PROXY_HANDLER, PROXY_TARGET, CALL, CONSTRUCT, setInternalMethods } from '../symbols';
+import { PROXY_HANDLER, PROXY_TARGET, CALL, CONSTRUCT } from '../symbols';
+import { setInternalMethods } from '../internalMethods';
 import * as internalMethods from './_internalMethods';
 import * as internalFnMethods from './_internalFnMethods';
 import { assertObject } from '../helpers';
@@ -25,8 +26,8 @@ export default class Proxy {
 		var proxy;
 
 		if (typeof target === 'function') {
-			proxy = Object.setPrototypeOf(function proxy(...args) {
-				if (this instanceof proxy) {
+			proxy = Object.setPrototypeOf(function proxied(...args) {
+				if (this instanceof proxied) {
 					return proxy[CONSTRUCT](args, this.constructor);
 				} else {
 					return proxy[CALL](this, args);

@@ -1,5 +1,5 @@
 import { ENUMERATE } from '../symbols';
-import { has, assertObject } from '../helpers';
+import { isProxy, assertObject } from '../helpers';
 import { getPrototypeOf, ownKeys, getOwnPropertyDescriptor } from './';
 
 function* oEnumerate(obj) {
@@ -27,7 +27,7 @@ function* oEnumerate(obj) {
 
 export function enumerate(target) {
 	assertObject(target);
-	if (target::has(ENUMERATE)) {
+	if (target::isProxy()) {
 		return target[ENUMERATE]();
 	}
 	return oEnumerate(target);

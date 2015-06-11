@@ -1,17 +1,33 @@
-var func2 = new Proxy(func, {
+import { assert } from 'chai';
+
+var fnProxy = new Proxy(function () { return 42 }, {
 	construct(target, args, newTarget) {
-		console.log('construct', {target, args, isOwn: newTarget.__proto__ === func2.prototype});
+		return {
+			type: 'construct',
+			args
+		};
 	},
 
 	apply(target, receiver, args) {
-		console.log('apply', {target, receiver, args});
+		return {
+			type: 'apply',
+			args,
+			result: target.apply(receiver, args)
+		};
 	}
 });
 
-func2(1, 2, 3);
-new func2('a', 'b', 'c');
+it('should call `construct` trap on `new fnProxy()`', () => {
+	assert.deepEqual(new fnProxy(1, 2, 3), {
+		type: 'construct',
+		args: [1, 2, 3]
+	});
+});
 
-class A extends func2 {
-}
-
-new A('x', 'y', 'z');
+it('should call `call` trap on `fnProxy()`', () => {
+	assert.deepEqual(fnProxy(1, 2, 3), {
+		type: 'apply',
+		args: [1, 2, 3],
+		result: 42
+	});
+});

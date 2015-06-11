@@ -3,7 +3,6 @@
 	"optional": [
 		"runtime",
 		"es6.spec.symbols",
-		"validation.undeclaredVariableCheck",
 		"optimisation.flow.forOf"
 	]
 }

@@ -1,10 +1,10 @@
 import { SET } from '../symbols';
-import { has, isObject, assertObject, isDataDescriptor } from '../helpers';
+import { isProxy, isObject, assertObject, isDataDescriptor } from '../helpers';
 import { apply, defineProperty, getOwnPropertyDescriptor, getPrototypeOf } from './';
 
 export function set(target, key, value, receiver = target) {
 	assertObject(target);
-	if (target::has(SET)) {
+	if (target::isProxy()) {
 		return target[SET](key, value, receiver);
 	}
 	var desc = getOwnPropertyDescriptor(target, key);

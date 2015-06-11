@@ -1,10 +1,10 @@
 import { GET } from '../symbols';
-import { has, assertObject, isDataDescriptor } from '../helpers';
+import { isProxy, assertObject, isDataDescriptor } from '../helpers';
 import { apply, getOwnPropertyDescriptor, getPrototypeOf } from './';
 
 export function get(target, key, receiver = target) {
 	assertObject(target);
-	if (target::has(GET)) {
+	if (target::isProxy()) {
 		return target[GET](key, receiver);
 	}
 	var desc = getOwnPropertyDescriptor(target, key);

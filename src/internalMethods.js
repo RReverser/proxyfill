@@ -34,10 +34,10 @@ export const internalMethods = Object.freeze({
 	setPrototypeOf: SET_PROTOTYPE_OF
 });
 
-const methodEntries = Object.keys(internalMethods).map(function (key) {
+const methodEntries = Object.keys(internalMethods).map(function (name) {
 	return {
 		name,
-		symbol: internalMethods[key]
+		symbol: internalMethods[name]
 	};
 }, internalMethods);
 

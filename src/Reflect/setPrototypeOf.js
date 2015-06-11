@@ -1,5 +1,5 @@
 import { SET_PROTOTYPE_OF } from '../symbols';
-import { has, tryApply, assertObject } from '../helpers';
+import { isProxy, tryApply, assertObject } from '../helpers';
 import { setPrototypeOf as oSetPrototypeOf } from '../Object/_original';
 
 export function setPrototypeOf(target, proto) {
@@ -7,7 +7,7 @@ export function setPrototypeOf(target, proto) {
 	if (proto !== null) {
 		assertObject(proto);
 	}
-	if (target::has(SET_PROTOTYPE_OF)) {
+	if (target::isProxy()) {
 		return target[SET_PROTOTYPE_OF](proto);
 	}
 	return tryApply(oSetPrototypeOf, Object, [target, proto]);

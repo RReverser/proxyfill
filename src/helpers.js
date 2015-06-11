@@ -1,6 +1,11 @@
 import { PROXY_HANDLER } from './symbols';
+import Proxy from './Proxy';
 
-export const has = Object.prototype.hasOwnProperty;
+const { hasOwnProperty } = Object.prototype;
+
+export function isProxy() {
+	return this::hasOwnProperty(PROXY_HANDLER);
+}
 
 export function tryApply(func, context, args) {
 	try {
