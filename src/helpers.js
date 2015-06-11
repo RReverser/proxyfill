@@ -2,6 +2,13 @@ import { PROXY_HANDLER } from './symbols';
 
 const { hasOwnProperty } = Object.prototype;
 
+export function toObject(value) {
+	if (value == null) {
+		throw new TypeError(`can't convert ${value} to object`);
+	}
+	return Object(value);
+}
+
 export function isProxy() {
 	return this::hasOwnProperty(PROXY_HANDLER);
 }
@@ -25,7 +32,7 @@ export function isObject(obj) {
 
 export function assertObject(obj) {
 	if (!isObject(obj)) {
-		throw new TypeError('Value is not an Object.');
+		throw new TypeError(`${obj === null ? 'null' : typeof obj} is not an object`);
 	}
 }
 
