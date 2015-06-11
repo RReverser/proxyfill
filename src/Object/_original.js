@@ -16,3 +16,8 @@ export const {
 	seal,
 	setPrototypeOf
 } = Object;
+
+export const {
+	hasOwnProperty,
+	toString
+} = Object.prototype;
