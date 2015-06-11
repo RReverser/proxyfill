@@ -4,13 +4,14 @@ import { getOwnPropertyDescriptor } from '../Reflect';
 export function ownKeys(trapResult, target) {
 	assertObject(trapResult);
 	trapResult = Array.from(trapResult, value => {
-		if (typeof value !== "string" && typeof value !== "symbol") {
+		if (typeof value !== 'string' && typeof value !== 'symbol') {
 			invariant('The Type of each result List element is either String or Symbol.');
 		}
 	});
 	var extensibleTarget = Object.isExtensible(target);
 	var targetKeys = ownKeys(target);
-	var targetConfigurableKeys = [], targetNonConfigurableKeys = [];
+	var targetConfigurableKeys = [];
+	var targetNonConfigurableKeys = [];
 	for (let key of targetKeys) {
 		let desc = getOwnPropertyDescriptor(target, key);
 		if (desc !== undefined && !desc.configurable) {

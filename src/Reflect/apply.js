@@ -9,6 +9,6 @@ export function apply(target, thisArg, args) {
 	if (target::isProxy()) {
 		return target[CALL](thisArg, [...args]);
 	}
-	var apply = target::isProxy() ? target[CALL] : funcApply;
-	return Reflect.apply(thisArg, [...args]);
+	var targetApply = target::isProxy() ? target[CALL] : funcApply;
+	return target::targetApply(thisArg, [...args]);
 }

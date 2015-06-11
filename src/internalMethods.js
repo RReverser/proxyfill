@@ -34,19 +34,17 @@ export const internalMethods = Object.freeze({
 	setPrototypeOf: SET_PROTOTYPE_OF
 });
 
-const methodEntries = Object.keys(internalMethods).map(function (name) {
-	return {
-		name,
-		symbol: internalMethods[name]
-	};
-}, internalMethods);
+const methodEntries = Object.keys(internalMethods).map(name => ({
+	name,
+	symbol: internalMethods[name]
+}));
 
 export function setInternalMethods(obj, impl, transform) {
 	for (let { name, symbol } of methodEntries) {
 		if (!(name in impl)) {
 			continue;
 		}
-		var method = impl[name];
+		let method = impl[name];
 		if (transform !== undefined) {
 			method = transform(method, name);
 		}

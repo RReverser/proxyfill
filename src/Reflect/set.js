@@ -1,6 +1,6 @@
 import { SET } from '../symbols';
 import { isProxy, isObject, assertObject, isDataDescriptor } from '../helpers';
-import { apply, defineProperty, getOwnPropertyDescriptor, getPrototypeOf } from './';
+import { defineProperty, getOwnPropertyDescriptor, getPrototypeOf } from './';
 
 export function set(target, key, value, receiver = target) {
 	assertObject(target);
@@ -21,7 +21,9 @@ export function set(target, key, value, receiver = target) {
 		};
 	}
 	if (isDataDescriptor(desc)) {
-		if (!desc.writable || !isObject(receiver)) return false;
+		if (!desc.writable || !isObject(receiver)) {
+			return false;
+		}
 		let hasOwnKey = getOwnPropertyDescriptor(receiver, key) !== undefined;
 		return defineProperty(receiver, key, hasOwnKey ? { value } : {
 			value,
@@ -31,7 +33,9 @@ export function set(target, key, value, receiver = target) {
 		});
 	}
 	var setter = desc.set;
-	if (setter === undefined) return false;
-	apply(setter, receiver, []);
+	if (setter === undefined) {
+		return false;
+	}
+	receiver::setter(value);
 	return true;
 }

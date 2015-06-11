@@ -1,5 +1,4 @@
 import { PROXY_HANDLER } from './symbols';
-import Proxy from './Proxy';
 
 const { hasOwnProperty } = Object.prototype;
 
@@ -39,14 +38,14 @@ export function toPropertyDescriptor(obj) {
 	if ('value' in obj) {
 		desc.value = obj.value;
 	}
-	for (let key of ['enumerable', 'configurable', 'writable']) {
+	for (let key of [ 'enumerable', 'configurable', 'writable' ]) {
 		if (key in obj) {
 			desc[key] = Boolean(obj[key]);
 		}
 	}
 	for (let key of ['get', 'set']) {
 		if (key in obj) {
-			var func = obj[key];
+			let func = obj[key];
 			if (typeof func !== 'function' && func !== undefined) {
 				throw new TypeError(`descriptor.${key} should be a function`);
 			}
@@ -59,9 +58,17 @@ export function toPropertyDescriptor(obj) {
 	return desc;
 }
 
-export var isDataDescriptor = desc => 'value' in desc || 'writable' in desc;
-export var isAccessorDescriptor = desc => 'get' in desc || 'set' in desc;
-export var isGenericDescriptor = desc => !isAccessorDescriptor(desc) && !isDataDescriptor(desc);
+export function isDataDescriptor(desc) {
+	return 'value' in desc || 'writable' in desc;
+}
+
+export function isAccessorDescriptor(desc) {
+	return 'get' in desc || 'set' in desc;
+}
+
+export function isGenericDescriptor(desc) {
+	return !isAccessorDescriptor(desc) && !isDataDescriptor(desc);
+}
 
 export function completePropertyDescriptor(desc) {
 	if (isGenericDescriptor(desc) || isDataDescriptor(desc)) {
@@ -96,7 +103,7 @@ export function isCompatiblePropertyDescriptor(extensible, desc, current) {
 	if (isSubSetOfCurrent) {
 		return true;
 	}
-	if (!current.configurable && (desc.configurable || (desc.enumerable === !current.enumerable))) {
+	if (!current.configurable && (desc.configurable || desc.enumerable === !current.enumerable)) {
 		return false;
 	}
 	if (isGenericDescriptor(desc)) {
@@ -111,11 +118,17 @@ export function isCompatiblePropertyDescriptor(extensible, desc, current) {
 				if (desc.writable) {
 					return false;
 				}
-				if ('value' in desc && !Object.is(current.value, desc.value)) return false;
+				if ('value' in desc && !Object.is(current.value, desc.value)) {
+					return false;
+				}
 			}
 		} else if (isAccessorDescriptor(desc) && isAccessorDescriptor(current)) {
-			if ('get' in desc && !Object.is(desc.get, current.get)) return false;
-			if ('set' in desc && !Object.is(desc.set, current.set)) return false;
+			if ('get' in desc && !Object.is(desc.get, current.get)) {
+				return false;
+			}
+			if ('set' in desc && !Object.is(desc.set, current.set)) {
+				return false;
+			}
 		}
 	}
 	return true;

@@ -1,0 +1,10 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "new-cap": [2, {                 // http://eslint.org/docs/rules/new-cap
+      "newIsCap": false
+    }]
+  }
+}

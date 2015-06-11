@@ -29,9 +29,8 @@ export default class Proxy {
 			proxy = Object.setPrototypeOf(function proxied(...args) {
 				if (this instanceof proxied) {
 					return proxy[CONSTRUCT](args, this.constructor);
-				} else {
-					return proxy[CALL](this, args);
 				}
+				return proxy[CALL](this, args);
 			}, FunctionProxyProto);
 		} else {
 			proxy = this;
@@ -60,7 +59,7 @@ export default class Proxy {
 }
 
 function wrapTrap(method, name) {
-	return function (...args) {
+	return function trapWrapper(...args) {
 		var handler = this::getProxyHandler();
 		var target = this[PROXY_TARGET];
 		args.unshift(target);

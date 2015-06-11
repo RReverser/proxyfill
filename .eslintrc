@@ -1,0 +1,65 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "ecmaFeatures": {
+    "modules": true,
+    "objectLiteralDuplicateProperties": false
+  },
+  "rules": {
+    // Possible errors
+    "no-console": 1,
+    "no-extra-parens": 2,
+    "no-inner-declarations": [2, "both"],
+    // Best practices
+    "accessor-pairs": 2,
+    "block-scoped-var": 2, // see https://github.com/eslint/eslint/issues/2747
+    "consistent-return": 1,
+    "default-case": 2,
+    "dot-location": [2, "property"],
+    "eqeqeq": [2, "allow-null"],
+    "no-else-return": 2,
+    "no-extend-native": [2, { "exceptions": ["Object"] }],
+    "no-floating-decimal": 2,
+    "no-labels": 0,
+    "no-loop-func": 1,
+    "no-self-compare": 2,
+    "no-throw-literal": 2,
+    "no-void": 2,
+    "no-warning-comments": 1,
+    "radix": 2,
+    "wrap-iife": [2, "inside"],
+    // Strict mode
+    "strict": [2, "never"],
+    // Stylistic issues
+    "brace-style": 2,
+    "comma-style": 2,
+    "func-names": 2,
+    "func-style": 2,
+    "indent": [2, "tab", { "indentSwitchCase": true }],
+    "lines-around-comment": 2,
+    "max-nested-callbacks": 2,
+    "new-cap": [2, { "newIsCap": false }],
+    "no-lonely-if": 2,
+    "no-multiple-empty-lines": [2, { "max": 1 }],
+    "no-nested-ternary": 2,
+    "no-unneeded-ternary": 2,
+    "object-curly-spacing": [2, "always"],
+    "operator-assignment": 2,
+    "operator-linebreak": 2,
+    "padded-blocks": [2, "never"],
+    "quotes": [2, "single"],
+    "space-after-keywords": 2,
+    "space-before-blocks": 2,
+    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
+    "space-in-brackets": 0, // see https://github.com/eslint/eslint/issues/2226
+    "space-in-parens": 2, // see https://github.com/babel/babel-eslint/issues/129
+    "spaced-line-comment": 2,
+    // ECMAScript 6
+    "generator-star-spacing": [2, "after"],
+    "object-shorthand": [2, "properties"] // see https://github.com/eslint/eslint/issues/2748
+  }
+}

@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
-    "watch": "babel src --out-dir dist --watch"
+    "watch": "babel src --out-dir dist --watch",
+    "lint": "eslint --ignore-path .gitignore ."
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
     "better-log": "^1.2.0"
   },
   "devDependencies": {
-    "babel": "^5.5.6"
+    "babel": "^5.5.6",
+    "babel-eslint": "^3.1.15",
+    "eslint": "^0.22.1"
   }
 }

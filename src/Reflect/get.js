@@ -1,6 +1,6 @@
 import { GET } from '../symbols';
 import { isProxy, assertObject, isDataDescriptor } from '../helpers';
-import { apply, getOwnPropertyDescriptor, getPrototypeOf } from './';
+import { getOwnPropertyDescriptor, getPrototypeOf } from './';
 
 export function get(target, key, receiver = target) {
 	assertObject(target);
@@ -10,13 +10,11 @@ export function get(target, key, receiver = target) {
 	var desc = getOwnPropertyDescriptor(target, key);
 	if (desc === undefined) {
 		let parent = getPrototypeOf(target);
-		if (parent === null) return;
-		return get(parent, key, receiver);
+		return parent !== null ? get(parent, key, receiver) : undefined;
 	}
 	if (isDataDescriptor(desc)) {
 		return desc.value;
 	}
 	var getter = desc.get;
-	if (getter === undefined) return;
-	return apply(getter, receiver, []);
+	return getter !== undefined ? receiver::getter() : undefined;
 }
