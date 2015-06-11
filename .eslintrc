@@ -16,7 +16,7 @@
     "no-inner-declarations": [2, "both"],
     // Best practices
     "accessor-pairs": 2,
-    "block-scoped-var": 2, // see https://github.com/eslint/eslint/issues/2747
+    "block-scoped-var": 0, // see https://github.com/eslint/eslint/issues/2747
     "consistent-return": 1,
     "default-case": 2,
     "dot-location": [2, "property"],
@@ -34,6 +34,8 @@
     "wrap-iife": [2, "inside"],
     // Strict mode
     "strict": [2, "never"],
+    // Variables
+    "no-use-before-define": [2, "nofunc"],
     // Stylistic issues
     "brace-style": 2,
     "comma-style": 2,

@@ -1,5 +1,6 @@
 import { CONSTRUCT } from '../symbols';
 import { isProxy, isObject } from '../helpers';
+import { create } from '../Object/_original';
 var funcApply = Function.prototype.apply;
 
 export function construct(target, args, newTarget = target) {
@@ -13,7 +14,7 @@ export function construct(target, args, newTarget = target) {
 		return target[CONSTRUCT]([...args], newTarget);
 	}
 	var { prototype } = newTarget;
-	var obj = isObject(prototype) ? Object.create(prototype) : {};
+	var obj = isObject(prototype) ? create(prototype) : {};
 	var newObj = target::funcApply(obj, [...args]);
 	return isObject(newObj) ? newObj : obj;
 }

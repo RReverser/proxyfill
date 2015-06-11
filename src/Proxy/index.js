@@ -3,6 +3,7 @@ import { setInternalMethods } from '../internalMethods';
 import * as internalMethods from './_internalMethods';
 import * as internalFnMethods from './_internalFnMethods';
 import { assertObject } from '../helpers';
+import { create, assign } from '../Object/_original';
 
 function getProxyHandler() {
 	var handler = this[PROXY_HANDLER];
@@ -58,6 +59,8 @@ export default class Proxy {
 	}
 }
 
+const ProxyProto = Proxy.prototype = create(null);
+
 function wrapTrap(method, name) {
 	return function trapWrapper(...args) {
 		var handler = this::getProxyHandler();
@@ -71,9 +74,9 @@ function wrapTrap(method, name) {
 	};
 }
 
-setInternalMethods(Proxy.prototype, internalMethods, wrapTrap);
+setInternalMethods(ProxyProto, internalMethods, wrapTrap);
 
-const FunctionProxyProto = Object.create(Function.prototype, {
+const FunctionProxyProto = create(Function.prototype, {
 	toString: {
 		writable: true,
 		configurable: true,
@@ -83,7 +86,7 @@ const FunctionProxyProto = Object.create(Function.prototype, {
 	}
 });
 
-Object.assign(FunctionProxyProto, Proxy.prototype);
+assign(FunctionProxyProto, ProxyProto);
 
 setInternalMethods(FunctionProxyProto, internalFnMethods, wrapTrap);
 

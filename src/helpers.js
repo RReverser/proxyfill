@@ -1,6 +1,5 @@
 import { PROXY_HANDLER } from './symbols';
-
-const { hasOwnProperty } = Object.prototype;
+import { hasOwnProperty } from './Object/_original';
 
 export function toObject(value) {
 	if (value == null) {

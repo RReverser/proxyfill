@@ -15,7 +15,9 @@ import {
 	SET_PROTOTYPE_OF
 } from './symbols';
 
-export const internalMethods = Object.freeze({
+import { freeze, keys } from './Object/_original';
+
+export const internalMethods = freeze({
 	__proto__: null,
 
 	apply: CALL,
@@ -34,7 +36,7 @@ export const internalMethods = Object.freeze({
 	setPrototypeOf: SET_PROTOTYPE_OF
 });
 
-const methodEntries = Object.keys(internalMethods).map(name => ({
+const methodEntries = keys(internalMethods).map(name => ({
 	name,
 	symbol: internalMethods[name]
 }));
