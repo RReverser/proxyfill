@@ -1,15 +1,10 @@
-import { PROXY_HANDLER } from './symbols';
-import { hasOwnProperty } from './Object/_original';
+import { get } from './Reflect';
 
 export function toObject(value) {
 	if (value == null) {
 		throw new TypeError(`can't convert ${value} to object`);
 	}
 	return Object(value);
-}
-
-export function isProxy() {
-	return this::hasOwnProperty(PROXY_HANDLER);
 }
 
 export function tryApply(func, context, args) {
@@ -21,18 +16,60 @@ export function tryApply(func, context, args) {
 	}
 }
 
-export function isObjectOrNull(obj) {
-	return typeof obj === 'object' || typeof obj === 'function';
+export function type(obj) {
+	if (obj === null) {
+		return 'null';
+	}
+	var result = typeof obj;
+	return result === 'function' ? 'object' : result;
 }
 
-export function isObject(obj) {
-	return isObjectOrNull(obj) && obj !== null;
+export function isCallable(obj) {
+	return typeof obj === 'function';
+}
+
+export function assertCallable(obj) {
+	if (!isCallable(obj)) {
+		throw new TypeError(`${type(obj)} is not a function`);
+	}
+}
+
+export function createListFromArrayLike(obj, elementTypes) {
+	assertObject(obj);
+	var length = get(obj, 'length');
+	var list = new Array(length);
+	for (let i = 0; i < length; i++) {
+		let item = get(obj, i);
+		if (elementTypes !== undefined) {
+			assertType(obj, elementTypes);
+		}
+		list[i] = item;
+	}
+	return list;
+}
+
+export function isType(obj, allowedTypes) {
+	var objType = type(obj);
+	if (typeof allowedTypes === 'string') {
+		return objType === allowedTypes;
+	}
+	return allowedTypes.indexOf(objType) >= 0;
+}
+
+export function assertType(obj, allowedTypes) {
+	if (!isType(obj)) {
+		throw new TypeError(`${type(obj)} is not supported (${allowedTypes})`);
+	}
 }
 
 export function assertObject(obj) {
-	if (!isObject(obj)) {
-		throw new TypeError(`${obj === null ? 'null' : typeof obj} is not an object`);
-	}
+	assertType(obj, 'object');
+}
+
+const objectOrNull = ['object', 'null'];
+
+export function assertObjectOrNull(obj) {
+	assertType(obj, objectOrNull);
 }
 
 export function invariant(message) {

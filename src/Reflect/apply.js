@@ -1,14 +1,15 @@
 import { CALL } from '../symbols';
-import { isProxy } from '../helpers';
+import { assertCallable, createListFromArrayLike } from '../helpers';
+import { isProxy } from '../Proxy';
+
 var funcApply = Function.prototype.apply;
 
 export function apply(target, thisArg, args) {
-	if (typeof target !== 'function') {
-		throw new TypeError('target should be a function.');
+	assertCallable(target);
+	args = createListFromArrayLike(args);
+	if (isProxy(target)) {
+		return target[CALL](thisArg, args);
 	}
-	if (target::isProxy()) {
-		return target[CALL](thisArg, [...args]);
-	}
-	var targetApply = target::isProxy() ? target[CALL] : funcApply;
-	return target::targetApply(thisArg, [...args]);
+	var targetApply = isProxy(target) ? target[CALL] : funcApply;
+	return target::targetApply(thisArg, args);
 }

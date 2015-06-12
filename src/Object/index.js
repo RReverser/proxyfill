@@ -1,15 +1,16 @@
 import {
-	isProxy,
 	isObject,
 	isObjectOrNull,
 	assertObject,
+	assertObjectOrNull,
 	toObject,
 	toPropertyDescriptor,
 	isAccessorDescriptor
 } from '../helpers';
 
 import * as O from './_original';
-import * as R from '../Reflect';
+import R from '../Reflect';
+import { isProxy } from '../Proxy';
 
 function testIntegrityLevel(target, frozen) {
 	if (!isObject(target)) {
@@ -53,9 +54,7 @@ O.assign(Object, {
 	},
 
 	create(proto, props = undefined) {
-		if (proto !== null) {
-			assertObject(proto);
-		}
+		assertObjectOrNull(proto);
 		var obj = O.create(proto);
 		return props !== undefined ? Object.defineProperties(obj, props) : obj;
 	},
@@ -78,7 +77,7 @@ O.assign(Object, {
 
 	defineProperty(target, key, desc) {
 		assertObject(target);
-		if (target::isProxy()) {
+		if (isProxy(target)) {
 			let result = R.defineProperty(target, key, desc);
 			if (!result) {
 				throw new TypeError('can\'t define property "${key}" on this object');
@@ -111,7 +110,7 @@ O.assign(Object, {
 
 	getOwnPropertyNames(target) {
 		assertObject(target);
-		if (target::isProxy()) {
+		if (isProxy(target)) {
 			return R.ownKeys(target).filter(key => typeof key === 'string');
 		}
 		return O.getOwnPropertyNames(target);
@@ -119,7 +118,7 @@ O.assign(Object, {
 
 	getOwnPropertySymbols(target) {
 		assertObject(target);
-		if (target::isProxy()) {
+		if (isProxy(target)) {
 			return R.ownKeys(target).filter(key => typeof key === 'symbol');
 		}
 		return O.getOwnPropertySymbols(target);
@@ -157,7 +156,7 @@ O.assign(Object, {
 
 	preventExtensions(target) {
 		assertObject(target);
-		if (target::isProxy()) {
+		if (isProxy(target)) {
 			let result = R.preventExtensions(target);
 			if (!result) {
 				throw new TypeError('can\'t prevent extensions of this object');
@@ -178,7 +177,7 @@ O.assign(Object, {
 
 	setPrototypeOf(target, proto) {
 		assertObject(target);
-		if (target::isProxy()) {
+		if (isProxy(target)) {
 			let result = R.setPrototypeOf(target, proto);
 			if (!result) {
 				throw new TypeError('can\'t set prototype of this object');

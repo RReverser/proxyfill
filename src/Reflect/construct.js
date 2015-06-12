@@ -1,20 +1,19 @@
 import { CONSTRUCT } from '../symbols';
-import { isProxy, isObject } from '../helpers';
+import { isObject, assertCallable, createListFromArrayLike } from '../helpers';
+import { isProxy } from '../Proxy';
 import { create } from '../Object/_original';
+
 var funcApply = Function.prototype.apply;
 
 export function construct(target, args, newTarget = target) {
-	if (typeof target !== 'function') {
-		throw new TypeError('target should be a constructor.');
-	}
-	if (typeof newTarget !== 'function') {
-		throw new TypeError('newTarget should be a constructor.');
-	}
-	if (target::isProxy()) {
-		return target[CONSTRUCT]([...args], newTarget);
+	assertCallable(target);
+	assertCallable(newTarget);
+	args = createListFromArrayLike(args);
+	if (isProxy(target)) {
+		return target[CONSTRUCT](args, newTarget);
 	}
 	var { prototype } = newTarget;
 	var obj = isObject(prototype) ? create(prototype) : {};
-	var newObj = target::funcApply(obj, [...args]);
+	var newObj = target::funcApply(obj, args);
 	return isObject(newObj) ? newObj : obj;
 }

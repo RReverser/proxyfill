@@ -1,6 +1,7 @@
 import { ENUMERATE } from '../symbols';
-import { isProxy, assertObject } from '../helpers';
-import { getPrototypeOf, ownKeys, getOwnPropertyDescriptor } from './';
+import { assertObject } from '../helpers';
+import { isProxy } from '../Proxy';
+import { getPrototypeOf, ownKeys, getOwnPropertyDescriptor } from './_methods';
 
 function* oEnumerate(obj) {
 	var visited = new Set();
@@ -29,7 +30,7 @@ function* oEnumerate(obj) {
 
 export function enumerate(target) {
 	assertObject(target);
-	if (target::isProxy()) {
+	if (isProxy(target)) {
 		return target[ENUMERATE]();
 	}
 	return oEnumerate(target);

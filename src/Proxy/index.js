@@ -3,7 +3,7 @@ import { setInternalMethods } from '../internalMethods';
 import * as internalMethods from './_internalMethods';
 import * as internalFnMethods from './_internalFnMethods';
 import { assertObject } from '../helpers';
-import { create, assign } from '../Object/_original';
+import { create, assign, hasOwnProperty } from '../Object/_original';
 
 function getProxyHandler() {
 	var handler = this[PROXY_HANDLER];
@@ -16,6 +16,10 @@ function getProxyHandler() {
 function assertValidProxyArgument(obj) {
 	assertObject(obj);
 	obj::getProxyHandler();
+}
+
+export function isProxy(obj) {
+	return obj::hasOwnProperty(PROXY_HANDLER);
 }
 
 export default class Proxy {

@@ -1,13 +1,11 @@
-import { invariant, assertObject } from '../helpers';
+import { invariant, assertObject, createListFromArrayLike } from '../helpers';
 import { getOwnPropertyDescriptor } from '../Reflect';
+
+const stringOrSymbol = ['string', 'symbol'];
 
 export function ownKeys(trapResult, target) {
 	assertObject(trapResult);
-	trapResult = Array.from(trapResult, value => {
-		if (typeof value !== 'string' && typeof value !== 'symbol') {
-			invariant('The Type of each result List element is either String or Symbol.');
-		}
-	});
+	trapResult = createListFromArrayLike(trapResult, stringOrSymbol);
 	var extensibleTarget = Object.isExtensible(target);
 	var targetKeys = ownKeys(target);
 	var targetConfigurableKeys = [];
