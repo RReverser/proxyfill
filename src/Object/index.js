@@ -149,8 +149,6 @@ O.assign(Object, {
 			}
 		}
 
-		// TODO: Order the elements of names so they are in the same relative order as would be produced by the Iterator that would be returned if the [[Enumerate]] internal method was invoked on O.
-
 		return names;
 	},
 
